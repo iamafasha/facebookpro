@@ -1,7 +1,8 @@
 from django.contrib import admin
-from .models import Post, PostImage,Comment
+from .models import Post, PostImage,Comment,PostLike
 
 admin.site.register(PostImage)
+admin.site.register(PostLike)
 admin.site.register(Comment)
 
 class PostImageAdmin(admin.StackedInline):

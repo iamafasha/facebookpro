@@ -15,6 +15,11 @@ class Post(models.Model):
     def __str__(self):
         return self.text[0:100]
 
+class PostLike(models.Model):
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, default=None, on_delete=models.CASCADE)
+    created_date = models.DateTimeField(default=timezone.now)
+
 class PostImage(models.Model):
     post = models.ForeignKey(Post, default=None, on_delete=models.CASCADE)
     image = models.FileField(upload_to = 'media/',blank=True, null=True)

@@ -38,4 +38,8 @@ def profile(request ,username=None):
     return render(request, 'post/timeline.html',context)
 
 def single_post(request, username,id):
-    return render(request, 'post/single_post.html')
+    post= Post.objects.get(pk=id)
+    context ={
+        'post':post
+    }
+    return render(request, 'post/single_post.html',context)

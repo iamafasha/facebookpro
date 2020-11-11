@@ -15,7 +15,24 @@
 <body>
 
 
+
+  
+
   <div class="container">
+    <br/>
+      <div class="row">
+               
+        <div class="col-xs-12 col-md-4 text-center">
+            <figure>
+                <img style="max-width:200px" src="{{user.profile_pic.url}}" alt="" class="img-circle img-responsive">
+            </figure>
+        </div>
+
+         <div class="col-xs-12 col-md-4">
+         <p>{{user.bio}}</p>
+         <p>{{user.username}}</p>
+         </div>     
+      </div>
     <div class="row">
       <form action="{% url 'settings' %}" enctype="multipart/form-data" method="POST"  >
         <br>

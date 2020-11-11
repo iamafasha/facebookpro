@@ -1,39 +1,37 @@
 {% extends 'post/layout/default.html' %}
 
 {% block posts %}
-<div class="card">
-    <div class="card-header">
-        Isakiye Afasha
-    </div>
+  {% if post %}
+      <div class="card">
+      <div class="card-header">
+         {{post.author.first_name}} {{post.author.last_name}}
+      </div>
 
-    <div class="card-body" > 
-        One morning in August 1973, an armed robber walks into the bank at Norrmalms Square, Stockholm. He takes four hostages and demands the release of the famous bank robber Clark Olofsson, plus three million Swedish crowns in cash.
-        This is the story of one of the most famous crimes in Swedish history, after which the whole world got to know a new expression; The Stockholm Syndrome.
-    </div>
+      <div class="card-body" > 
+        {{post.text}}   
+      </div>
 
-    <img class="card-img-top" style="max-height:300px;object-fit:cover" src="https://via.placeholder.com/900" alt="Card image cap">
-    <img class="card-img-top" style="max-height:300px;object-fit:cover" src="https://via.placeholder.com/900" alt="Card image cap">
+      {% comment %} <img class="card-img-top" style="max-height:300px;object-fit:cover" src="https://via.placeholder.com/900" alt="Card image cap">
+      <img class="card-img-top" style="max-height:300px;object-fit:cover" src="https://via.placeholder.com/900" alt="Card image cap"> {% endcomment %}
 
-    <div  class="card-footer"  >
-        <span> 3 Comments</span> 
+      <div  class="card-footer"  >
 
-        <span><a href="#add-comment-form" class="btn" role="button">Add Comment</a></span>
-    </div>
-</div>
+           <span>3 Likes</span>
 
-
-
-<h4>Comments</h4>
-<div class="card text-left">
-  <div class="card-body">
-    <h4 class="card-title">Musa Nsiba mbi</h4>
-    <p class="card-text">Haha this is a crazy post. Let just try to comment alittle here. please allow me</p>
+          <span> 3 Comments</span> 
+           <span><a href="#add-comment-form" class="btn" role="button">Like</a></span>
+          <span><a href="#add-comment-form" class="btn" role="button">Add Comment</a></span>
+      </div>
   </div>
-</div>
 
-<br>
 
-<div class="card text-left">
+
+  <h5>Comments</h5>
+
+  {% for comment in post.comments.all %}
+      {{comment.text}}
+  {% endfor %}
+  <div class="card text-left">
     <div class="card-body">
       <h4 class="card-title">Musa Nsiba mbi</h4>
       <p class="card-text">Haha this is a crazy post. Let just try to comment alittle here. please allow me</p>
@@ -43,19 +41,43 @@
   <br>
 
   <div class="card text-left">
-    <div class="card-body">
-      <h4 class="card-title">Musa Nsiba mbi</h4>
-      <p class="card-text">Haha this is a crazy post. Let just try to comment alittle here. please allow me</p>
+      <div class="card-body">
+        <h4 class="card-title">Musa Nsiba mbi</h4>
+        <p class="card-text">Haha this is a crazy post. Let just try to comment alittle here. please allow me</p>
+      </div>
     </div>
-  </div>
 
     <br>
 
-  <div id="add-comment-form"  class="form-group">
-    <textarea class="form-control" name="" id="" rows="3"></textarea>
-    <br>
-    <button type="button" class="btn btn-primary">Add Comment</button>
-  </div>
+    <div class="card text-left">
+      <div class="card-body">
+        <h4 class="card-title">Musa Nsiba mbi</h4>
+        <p class="card-text">Haha this is a crazy post. Let just try to comment alittle here. please allow me</p>
+      </div>
+    </div>
 
+      <br>
 
+    <div id="add-comment-form"  class="form-group">
+      <textarea class="form-control" name="" id="" rows="3"></textarea>
+      <br>
+      <button type="button" class="btn btn-primary">Add Comment</button>
+    </div>
+
+  {% endif %}
 {% endblock posts %} 
+
+
+{% block aside %}
+ <br/>
+ <br/>
+{% if user.username == post %}
+  <ul class="list-group">
+   <h5>Un approved comments</h5>
+    <li class="list-group-item ">
+      <span>Hello this comment is not that great. may delay to be approved</span>
+       <button class="btn">Approve</button>
+    </li>
+  </ul>
+{% endif %}
+{% endblock aside %}
