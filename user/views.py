@@ -1,5 +1,6 @@
 from django.shortcuts import render , redirect, get_object_or_404
 from django.contrib.auth import authenticate ,logout as signout ,login
+from django.contrib.auth.decorators import login_required
 from .models import User 
 from django.contrib import messages
 from .forms import LoginForm , RegisterForm , ProfileForm
@@ -80,6 +81,20 @@ def settings(request):
         }
         return render(request, 'user/settings.html',context)
     return redirect('home')
+
+@login_required
+def settings(request):
+    if request.method == 'POST':
+         profile_form = ProfileForm(request.POST, request.FILES, instance=request.user)
+         if profile_form.is_valid():
+             profile_form.save()
+             return redirect('home')
+    else:
+        profile_form = ProfileForm(instance=request.user)
+    context ={
+        'profile_form': profile_form
+    }
+    return render(request, 'user/settings.html', context)
 
 def logout(request):
     signout(request)

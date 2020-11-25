@@ -39,34 +39,9 @@
             {% csrf_token %}
         <h2>General User Settings</h2>
         <table>
-          {% comment %} <tr>
-            <td>Username</td>
-            <td>{{profile_form.user_name}}</td>
-          </tr>
-          <tr>
-            <td>Firstname</td>
-            <td>{{profile_form.first_name}}</td>
-          </tr>
-          <tr>
-            <td>Last Name</td>
-            <td>{{profile_form.last_name}}</td>
-          </tr>
-          <tr>
-            <td>Email</td>
-            <td>{{profile_form.email}}</td>
-          </tr> {% endcomment %}
+    
 
-          <tr>
-            <td>Bio</td>
-            <td>{{profile_form.bio}}</td>
-          </tr>
-
-          <tr>
-            <td>Update Profile Picture</td>
-            <td>{{profile_form.profile_picture}}</td>
-          </tr>
-
-
+          {{profile_form}}
           <tr>
             <td>Password</td>
             <td><button type="button" name="" id="" class="btn btn-primary" btn-lg btn-block">Change Password</button></td>
