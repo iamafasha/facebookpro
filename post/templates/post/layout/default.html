@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facebook Pro</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container-fluid">
+      {% block navbar%}  
+      <nav class="navbar navbar-dark bg-dark">
+            <a class="navbar-brand">Facebook Pro</a>
+            <div class="navbar-nav">
+
+            {% if user.is_authenticated %}
+              <a href="/profile/settings" class="navbar-item">Settings</a>
+              <a href="{% url 'logout' %}" class="navbar-item">Logout</a>
+            {% else %}
+              <form class="form-inline" method="post" action="{% url 'home' %}" >
+                {% csrf_token %}
+                {{form.username}}
+                {{form.password}}
+                <button type="submit" class="btn btn-primary">login</button>
+              </form>
+              <a href="{% url 'register' %}" class="navbar-item inline">Have no account? Register here.</a>
+            {% endif %}
+            </div>
+          </nav>
+      {% endblock %}
+    </div>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-4">
+
+        </div>
+        <div class="col-md-5">
+
+          {% if user.is_authenticated %}
+              
+              {% block create_post %}
+                <div> 
+                  <h1>Create post</h1>
+                  <form action={% url 'create_post' user.username %} method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                      <div class="form-group">
+                          <textarea rows="5" class="form-control" name="description" ></textarea>
+                      </div>
+        
+                      <div class="custom-file" >
+                        <input type="file" value="Upload" name="upload" id="inputGroupFile02" accept=".jpg, .jpeg, .png" multiple>
+                      </div>
+            
+                      <div class="form-group">
+                          <button type="submit" class="btn btn-primary">
+                              Create
+                          </button>
+                      </div>
+                      
+                  </form>
+                </div>
+              {% endblock create_post %}
+          {% else %}
+            Sign in or login to post and comment
+          {% endif %}
+          
+        <br/>
+        <br/>   
+          {% block posts %}
+            posts should appear here
+          {% endblock %}
+        </div>
+          <div class="col-md-3">
+          {% if user.is_authenticated %}
+            {% block aside %}
+            {% endblock %}
+          {% endif %}
+          </div>
+      </div>
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>
