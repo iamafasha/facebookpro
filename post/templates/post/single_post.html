@@ -1,7 +1,6 @@
 {% extends 'post/layout/default.html' %}
 
 {% block posts %}
-  {% if post %}
       <div class="card">
       <div class="card-header">
          {{post.author.first_name}} {{post.author.last_name}}
@@ -28,7 +27,7 @@
 
   <h5>Comments</h5>
 
-  {% for comment in post.comments.all %}
+  {% for comment in .comments.all %}
       {{comment.text}}
   {% endfor %}
   <div class="card text-left">
@@ -63,8 +62,6 @@
       <br>
       <button type="button" class="btn btn-primary">Add Comment</button>
     </div>
-
-  {% endif %}
 {% endblock posts %} 
 
 
