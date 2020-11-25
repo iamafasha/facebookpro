@@ -14,10 +14,12 @@
             <p class="card-text">{{post}}</p>
         </div>
 
-        {% for post_image in post.post_image_set.all %}
-            {{post_image}}
-        {% endfor %}
-        <img class="card-img-top" style="max-height:300px;object-fit:cover" src="https://via.placeholder.com/900" alt="Card image cap">
+        
+        <img class="card-img-top" style="max-height:300px;object-fit:cover" src="{{post.postimage_set.all.first.image.url}}" alt="Card image cap">
+        <div class="card-footer">
+            <span>{{post.postlike_set.all.count}} Likes</span>
+            <span> {{post.comment_set.all.count}} Comments</span>
+          </div>
         <div class="card-footer text-muted">
            <span>{{ post.published_date }}</span> 
             <a href="{% url 'sinlge_post' user post.id %}">view post</a>
@@ -58,28 +60,3 @@
     {% endblock aside %}
 
 
-{% if username == user.get_username %}
- 
-{% block create_post %}
-        <div> 
-          <h1>Create post</h1>
-          <form action="" method="POST">
-              
-              <div class="form-group">
-                  <textarea rows="5" class="form-control" name="description" ></textarea>
-              </div>
-
-              <div class="custom-file" >
-                <input type="file" value="Upload" name="upload" id="inputGroupFile02" accept=".jpg, .jpeg, .png" multiple>
-              </div>
-    
-              <div class="form-group">
-                  <button type="submit" class="btn btn-primary">
-                      Create
-                  </button>
-              </div>
-              
-          </form>
-	    	</div>
-{% endblock create_post %}
-{% endif %}

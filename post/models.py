@@ -8,7 +8,7 @@ class Post(models.Model):
     text = models.TextField()
     approved = models.BooleanField(default=False)
     created_date = models.DateTimeField(default=timezone.now)
-    published_date = models.DateTimeField(blank=True, null=True)
+    published_date = models.DateTimeField( default=timezone.now, blank=True, null=True)
     def publish(self):
         self.published_date = timezone.now()
         self.save()
@@ -22,8 +22,9 @@ class PostLike(models.Model):
 
 class PostImage(models.Model):
     post = models.ForeignKey(Post, default=None, on_delete=models.CASCADE)
-    image = models.FileField(upload_to = 'media/',blank=True, null=True)
-    
+    image = models.FileField(upload_to = 'images/',blank=True, null=True)
+    caption = models.TextField(blank=True, null=True)
+
     def __str__(self):
         return self.post.text[0:40]
 

@@ -1,80 +1,66 @@
 {% extends 'post/layout/default.html' %}
 
 {% block posts %}
-      <div class="card">
-      <div class="card-header">
-         {{post.author.first_name}} {{post.author.last_name}}
-      </div>
+<div class="card">
+  <div class="card-header">
+    {{post.author.first_name}} {{post.author.last_name}}
+  </div>
 
-      <div class="card-body" > 
-        {{post.text}}   
-      </div>
-
-      {% comment %} <img class="card-img-top" style="max-height:300px;object-fit:cover" src="https://via.placeholder.com/900" alt="Card image cap">
-      <img class="card-img-top" style="max-height:300px;object-fit:cover" src="https://via.placeholder.com/900" alt="Card image cap"> {% endcomment %}
-
-      <div  class="card-footer"  >
-
-           <span>3 Likes</span>
-
-          <span> 3 Comments</span> 
-           <span><a href="#add-comment-form" class="btn" role="button">Like</a></span>
-          <span><a href="#add-comment-form" class="btn" role="button">Add Comment</a></span>
-      </div>
+  <div class="card-body">
+    {{post.text}}
   </div>
 
 
-
-  <h5>Comments</h5>
-
-  {% for comment in .comments.all %}
-      {{comment.text}}
+  {% for post_image in post.postimage_set.all %}
+  <img class="card-img-top" style="max-height:300px;object-fit:cover" src="{{post_image.image.url}}"
+    alt="Card image cap">
   {% endfor %}
-  <div class="card text-left">
-    <div class="card-body">
-      <h4 class="card-title">Musa Nsiba mbi</h4>
-      <p class="card-text">Haha this is a crazy post. Let just try to comment alittle here. please allow me</p>
-    </div>
+
+
+  <div class="card-footer">
+    <span>{{post.postlike_set.all.count}} Likes</span>
+    <span> {{post.comment_set.all.count}} Comments</span>
   </div>
 
+  <div class="card-footer">
+    <span><a href="like" class="btn" role="button">Like</a></span>
+    <span><a href="#add-comment-form" class="btn" role="button">Add Comment</a></span>
+  </div>
+</div>
+
+
+
+<h5>Comments</h5>
+
+{% for comment in post.comment_set.all %}
+<div class="card text-left">
+  <div class="card-body">
+    <h4 class="card-title">{{comment.author.first_name}} {{comment.author.last_name}}</h4>
+    <p class="card-text">{{comment.text}}</p>
+  </div>
+</div>
+<br>
+
+{% endfor %}
+
+<div id="add-comment-form" class="form-group">
+  <textarea class="form-control" name="" id="" rows="3"></textarea>
   <br>
-
-  <div class="card text-left">
-      <div class="card-body">
-        <h4 class="card-title">Musa Nsiba mbi</h4>
-        <p class="card-text">Haha this is a crazy post. Let just try to comment alittle here. please allow me</p>
-      </div>
-    </div>
-
-    <br>
-
-    <div class="card text-left">
-      <div class="card-body">
-        <h4 class="card-title">Musa Nsiba mbi</h4>
-        <p class="card-text">Haha this is a crazy post. Let just try to comment alittle here. please allow me</p>
-      </div>
-    </div>
-
-      <br>
-
-    <div id="add-comment-form"  class="form-group">
-      <textarea class="form-control" name="" id="" rows="3"></textarea>
-      <br>
-      <button type="button" class="btn btn-primary">Add Comment</button>
-    </div>
-{% endblock posts %} 
+  <button type="button" class="btn btn-primary">Add Comment</button>
+</div>
+{% endblock posts %}
 
 
 {% block aside %}
- <br/>
- <br/>
+<br />
+<br />
 {% if user.username == post %}
-  <ul class="list-group">
-   <h5>Un approved comments</h5>
-    <li class="list-group-item ">
-      <span>Hello this comment is not that great. may delay to be approved</span>
-       <button class="btn">Approve</button>
-    </li>
-  </ul>
+<ul class="list-group">
+  <h5>Un approved comments</h5>
+  <li class="list-group-item ">
+    <span>Hello this comment is not that great. may delay to be approved</span>
+    <button class="btn">Approve</button>
+  </li>
+</ul>
 {% endif %}
 {% endblock aside %}
