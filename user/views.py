@@ -52,6 +52,7 @@ def register(request):
     context = {"form": register_form}
     return render(request, 'user/register.html',context)
 
+<<<<<<< HEAD
 def settings(request):
     if request.user.is_authenticated:
         print(request.user.first_name)
@@ -81,6 +82,21 @@ def settings(request):
         }
         return render(request, 'user/settings.html',context)
     return redirect('home')
+=======
+@login_required
+def settings(request):
+    if request.method == 'POST':
+         profile_form = ProfileForm(request.POST, request.FILES, instance=request.user)
+         if profile_form.is_valid():
+             profile_form.save()
+             return redirect('home')
+    else:
+        profile_form = ProfileForm(instance=request.user)
+    context ={
+        'profile_form': profile_form
+    }
+    return render(request, 'user/settings.html', context)
+>>>>>>> dev
 
 @login_required
 def settings(request):
