@@ -1,8 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic.edit import FormView, CreateView
 from user.forms import LoginForm
 from django.utils import timezone
-from .models import Post, PostImage
+from .models import Post, PostImage , Comment
 from user.models import User
 
 
@@ -45,7 +45,6 @@ def single_post(request, username, id):
     }
     return render(request, 'post/single_post.html',context)
 
-
 def create_post(request,username):
     if(request.method=="POST"):
         text = request.POST.get('description')
@@ -59,3 +58,13 @@ def create_post(request,username):
         'post':"hello"
     }
     return render(request, 'post/single_post.html',context)
+
+def comment(request, username, post_id , comment_id):
+    username = User.objects.get(username=username)
+    comment = Comment.objects.get(id =comment_id)
+    if request.method == 'GET':
+        setapprove=request.GET.get('set_approve')
+        if(setapprove == "true"):
+            comment.approved=True
+            comment.save()
+    return redirect('sinlge_post', username= username,id =post_id )
