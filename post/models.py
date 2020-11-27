@@ -38,5 +38,8 @@ class Comment(models.Model):
     def comment(self):
         self.save()
 
+    def filtered_unapproved_set(self):
+        pass
+
     def __str__(self):
         return self.text[0:50]
