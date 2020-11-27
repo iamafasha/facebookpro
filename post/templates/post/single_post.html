@@ -1,5 +1,5 @@
 {% extends 'post/layout/default.html' %}
-
+{% load post_comments %}
 {% block posts %}
 <div class="card">
   <div class="card-header">
@@ -27,12 +27,9 @@
     <span><a href="#add-comment-form" class="btn" role="button">Add Comment</a></span>
   </div>
 </div>
-
-
-
 <h5>Comments</h5>
 
-{% for comment in post.comment_set.all %}
+{% for comment in post.comment_set.all|in_approved %}
 <div class="card text-left">
   <div class="card-body">
     <h4 class="card-title">{{comment.author.first_name}} {{comment.author.last_name}}</h4>
@@ -54,13 +51,18 @@
 {% block aside %}
 <br />
 <br />
-{% if user.username == post %}
+{% if request.resolver_match.kwargs.username == user.username %}
 <ul class="list-group">
   <h5>Un approved comments</h5>
+  {% for unapproved_comments in post.comment_set.all|in_unapproved %}
   <li class="list-group-item ">
-    <span>Hello this comment is not that great. may delay to be approved</span>
-    <button class="btn">Approve</button>
+    <h5>{{unapproved_comments.author.first_name}} {{unapproved_comments.author.last_name}}</h5>
+    <span>{{unapproved_comments.text }}</span>
+    <br>
+    <br>
+    <a href="{% url 'comment' request.resolver_match.kwargs.username post.id unapproved_comments.id %}?set_approve=true" class="btn btn-primary">Approve</a>
   </li>
+  {% endfor %}
 </ul>
 {% endif %}
 {% endblock aside %}
