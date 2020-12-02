@@ -68,3 +68,14 @@ def comment(request, username, post_id , comment_id):
             comment.approved=True
             comment.save()
     return redirect('sinlge_post', username= username,id =post_id )
+
+def create_comment(request,username,post_id):
+    if request.method == 'POST' and request.user.is_authenticated:
+        comment_text=request.POST.get('post_comment')
+        try:
+            Comment.objects.create(author=request.user,reply_to=Post.objects.get(id=post_id),text=comment_text,approved=False)
+        except User.DoesNotExist:
+            pass
+        return redirect('sinlge_post', username= username,id =post_id )
+    elif request.method == 'GET':
+        return redirect(request.META.get('HTTP_REFERER'))
