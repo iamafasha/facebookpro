@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.views.generic.edit import FormView, CreateView
 from user.forms import LoginForm
 from django.utils import timezone
-from .models import Post, PostImage , Comment
+from .models import Post, Comment, PostLike, PostImage
 from user.models import User
 
 
