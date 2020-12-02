@@ -1,16 +1,16 @@
 from django.contrib import admin
-from .models import Post, PostImage,Comment,PostLike
+from .models import Post, PostMedia,Comment,PostLike
 
-admin.site.register(PostImage)
+admin.site.register(PostMedia)
 admin.site.register(PostLike)
 admin.site.register(Comment)
 
-class PostImageAdmin(admin.StackedInline):
-    model = PostImage
+class PostMediaAdmin(admin.StackedInline):
+    model = PostMedia
  
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    inlines = [PostImageAdmin]
+    inlines = [PostMediaAdmin]
  
     class Meta:
        model = Post

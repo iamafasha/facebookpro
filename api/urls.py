@@ -1,6 +1,6 @@
 from django.urls import path
 from .auth_views import RegisterView, LoginView
-from .post_views import PostDetailView, PostListView
+from .post_views import PostDetailView, PostListView, CommentListView , CommentDetailView
 
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
@@ -28,5 +28,7 @@ urlpatterns = [
     path('auth/register/', RegisterView.as_view()),
     path('auth/login/', LoginView.as_view()),
     path('posts/', PostListView.as_view()),
-    path('post/<int:id>/', PostDetailView.as_view()),
+    path('posts/<int:id>/', PostDetailView.as_view()),
+    path('posts/<int:post_id>/comments/', CommentListView.as_view()),
+    path('posts/<int:post_id>/comments/<int:id>/', CommentDetailView.as_view()),
 ]
