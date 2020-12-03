@@ -79,3 +79,17 @@ def create_comment(request,username,post_id):
         return redirect('sinlge_post', username= username,id =post_id )
     elif request.method == 'GET':
         return redirect(request.META.get('HTTP_REFERER'))
+
+def post_like(request,username,post_id):
+    if request.method == 'GET':
+        action=request.GET.get('action').strip()
+        post = Post.objects.get(id=post_id)
+        if action=='like' :
+            try:
+                PostLike.objects.get(author=request.user,post=post)
+            except PostLike.DoesNotExist:
+                print("")
+                PostLike.objects.create(author=request.user,post=post).save()
+        elif action=='unlike':
+            PostLike.objects.get(author=request.user,post=post).delete()
+    return redirect(request.META.get('HTTP_REFERER'))
