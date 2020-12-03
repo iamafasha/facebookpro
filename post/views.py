@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.views.generic.edit import FormView, CreateView
 from user.forms import LoginForm
 from django.utils import timezone
-from .models import Post, Comment, PostLike, PostImage
+from .models import Post, Comment, PostLike, PostMedia
 from user.models import User
 
 
@@ -52,12 +52,9 @@ def create_post(request,username):
         post.save()
         images=request.FILES.getlist('upload')
         for image in images:
-            post_image=PostImage(post=post,image=image,caption="")
+            post_image=PostMedia(post=post,image=image,caption="")
             post_image.save()
-    context ={
-        'post':"hello"
-    }
-    return render(request, 'post/single_post.html',context)
+        return redirect('sinlge_post', username=request.user.username, id =post.id )
 
 def comment(request, username, post_id , comment_id):
     username = User.objects.get(username=username)

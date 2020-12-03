@@ -20,9 +20,9 @@ class PostLike(models.Model):
     post = models.ForeignKey(Post, default=None, on_delete=models.CASCADE)
     created_date = models.DateTimeField(default=timezone.now)
 
-class PostImage(models.Model):
+class PostMedia(models.Model):
     post = models.ForeignKey(Post, default=None, on_delete=models.CASCADE)
-    image = models.FileField(upload_to = 'images/',blank=True, null=True)
+    image = models.FileField(upload_to = './',blank=True, null=True)
     caption = models.CharField(max_length=20, blank=True, null=True)
 
     def __str__(self):
