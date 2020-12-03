@@ -48,11 +48,32 @@
             <td>Password</td>
             <td><button type="button" name="" id="" class="btn btn-primary" btn-lg btn-block">Change Password</button></td>
           </tr>
-
-
           <tr>
-            <td><button type="submit" name="" id="" class="btn btn-primary" btn-lg btn-block">Save Changes</button></td>
-            <td><button type="button" name="" id="" class="btn btn-primary" btn-lg btn-block">Discard</button></td>
+             <td></td>
+          </tr>
+          <tr>
+             <td></td>
+          </tr>
+          <tr>
+             <td></td>
+          </tr>
+          <tr>
+             <td></td>
+          </tr>
+          <tr>
+             <td></td>
+          </tr><tr>
+             <td></td>
+          </tr><tr>
+             <td></td>
+          </tr><tr>
+             <td></td>
+          </tr><tr>
+             <td></td>
+          </tr>
+          <tr>
+            <td><button type="submit" class="btn btn-primary btn-lg btn-block">Save Changes</button></td>
+            <td><a href=" {% if request.META.HTTP_REFERER %} {{request.META.HTTP_REFERER}} {% else %}{% url 'home' %}{% endif %} " class="btn btn-danger btn-lg ">Cancel</a></td>
           </tr>
 
         </table>
