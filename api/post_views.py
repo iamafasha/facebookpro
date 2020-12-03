@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
-from post.models import Post , Comment ,PostImage, PostLike
+from post.models import Post , Comment ,PostMedia, PostLike
 from.post_serializers import PostSerializers
 from rest_framework import permissions
 
