@@ -12,8 +12,8 @@ class PostMediaSerializers(ModelSerializer):
 class CommentSerializers(ModelSerializer):
     class Meta:
         model = Comment
-        fields = ['id','text', 'author']
-        read_only_fields = ['author']
+        fields = ['id','text', 'author', 'created_date']
+        read_only_fields = ['author', 'created_date']
 
 
 class PostSerializers(ModelSerializer):

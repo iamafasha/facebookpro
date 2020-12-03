@@ -34,8 +34,10 @@ class CommentListView(ListCreateAPIView):
     permission_classes = [IsAuthenticated|ReadOnly]
     
     def perform_create(self, serializer):
-        print(serializer)
-        serializer.save()
+        post_id = self.kwargs['post_id']
+        post=Post.objects.get(id = post_id)
+        user =  self.request.user
+        serializer.save(reply_to = post, author=user )
 
     def get_queryset(self):
         post_id = self.kwargs['post_id']
@@ -43,9 +45,7 @@ class CommentListView(ListCreateAPIView):
 
 class CommentDetailView(RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated|ReadOnly]
-    
     serializer_class = CommentSerializers
     lookup_field = "id"
-
     def get_queryset(self):
         return Comment.objects.filter(approved=True)
