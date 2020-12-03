@@ -1,4 +1,6 @@
 from django.shortcuts import render , redirect, get_object_or_404
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 from django.contrib.auth import authenticate ,logout as signout ,login
 from django.contrib.auth.signals import user_logged_in
 from django.contrib.auth.decorators import login_required
@@ -22,7 +24,7 @@ def index(request):
                     login(request, user)
                     user.login_count = user.login_count + 1
                     user.save()
-                    return home(request)        
+                    return HttpResponseRedirect(reverse('home'))       
                 else:
                     messages.add_message(request, messages.ERROR,'Wrong username or password')
         context = {"form": login_form}
@@ -32,7 +34,7 @@ def index(request):
     
 def register(request):
     if request.user.is_authenticated:
-        return redirect('home')
+        return HttpResponseRedirect(reverse('home'))
     register_form=RegisterForm()
     if request.method == 'POST':
         register_form=RegisterForm(request.POST)
@@ -50,7 +52,7 @@ def register(request):
                     user= User.objects.create_user(user_name, password= password, email=email ,first_name=first_name, last_name=last_name)
                     user.save()
                     login(request,user)
-                    return redirect('home')
+                    return HttpResponseRedirect(reverse('home'))
 
     context = {"form": register_form}
     return render(request, 'user/register.html',context)
@@ -61,7 +63,7 @@ def settings(request):
          profile_form = ProfileForm(request.POST, request.FILES, instance=request.user)
          if profile_form.is_valid():
              profile_form.save()
-             return redirect('home')
+             return HttpResponseRedirect(reverse('home'))
     else:
         profile_form = ProfileForm(instance=request.user)
     context ={
@@ -73,4 +75,4 @@ def settings(request):
 @login_required
 def logout(request):
     signout(request)
-    return redirect('home')
+    return HttpResponseRedirect(reverse('home'))
