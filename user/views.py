@@ -24,7 +24,8 @@ def index(request):
                     login(request, user)
                     user.login_count = user.login_count + 1
                     user.save()
-                    return HttpResponseRedirect(reverse('home'))       
+                    # return HttpResponseRedirect(reverse('home'))  
+                    return redirect(request.META.get('HTTP_REFERER'))     
                 else:
                     messages.add_message(request, messages.ERROR,'Wrong username or password')
         context = {"form": login_form}
