@@ -66,20 +66,8 @@ def settings(request):
     }
     return render(request, 'user/settings.html', context)
 
-@login_required
-def settings(request):
-    if request.method == 'POST':
-         profile_form = ProfileForm(request.POST, request.FILES, instance=request.user)
-         if profile_form.is_valid():
-             profile_form.save()
-             return redirect('home')
-    else:
-        profile_form = ProfileForm(instance=request.user)
-    context ={
-        'profile_form': profile_form
-    }
-    return render(request, 'user/settings.html', context)
 
+@login_required
 def logout(request):
     signout(request)
     return redirect('home')
