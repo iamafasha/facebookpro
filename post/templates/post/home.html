@@ -21,7 +21,7 @@
         <div class="card-footer">
             <span> <a class="{% if post|is_post_liked_by:user %}liked{% endif %}" href="{% url 'post_like' post.author post.id %}?action={% if post|is_post_liked_by:user %} unlike {% else %} like {% endif %}"><i class="fa fa-heart-o" aria-hidden="true"></i></a> {{ post.postlike_set.count }} &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;</span>
             <span> <a > <i class="fa fa-comment"></i></a> {{post.comment_set.count}}</span>
-          </div>
+        </div>
         <div class="card-footer text-muted">
            <span>{{ post.published_date }}</span> 
             <a href="{% url 'sinlge_post' user post.id %}">view post</a>
