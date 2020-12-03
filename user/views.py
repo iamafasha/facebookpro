@@ -67,6 +67,7 @@ def settings(request):
     return render(request, 'user/settings.html', context)
 
 
+@login_required
 def logout(request):
     signout(request)
     return redirect('home')
