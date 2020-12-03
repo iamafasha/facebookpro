@@ -1,4 +1,6 @@
 {% extends 'post/layout/default.html' %}
+{% load post_likes %}
+
 {% block posts %}
     <h2>Latest Posts</h2>
 
@@ -14,12 +16,16 @@
             <p class="card-text">{{post}}</p>
         </div>
 
-        
-        <img class="card-img-top" style="max-height:300px;object-fit:cover" src="{{post.postmedia_set.all.first.image.url}}" alt="Card image cap">
+
+
+        {% if post.postmedia_set.count > 0 %}
+            <img class="card-img-top" style="max-height:300px;object-fit:cover" src=" {{post.postmedia_set.all.first.image.url}}" alt="Card image cap">
+        {% endif %}
+
         <div class="card-footer">
-            <span>{{post.postlike_set.all.count}} Likes</span>
-            <span> {{post.comment_set.all.count}} Comments</span>
-          </div>
+            <span> <a class="{% if post|is_post_liked_by:user %}liked{% endif %}" href="{% url 'post_like' post.author post.id %}?action={% if post|is_post_liked_by:user %} unlike {% else %} like {% endif %}"><i class="fa fa-heart-o" aria-hidden="true"></i></a> {{ post.postlike_set.count }} &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <span> <a > <i class="fa fa-comment"></i></a> {{post.comment_set.count}}</span>
+        </div>
         <div class="card-footer text-muted">
            <span>{{ post.published_date }}</span> 
             <a href="{% url 'sinlge_post' user post.id %}">view post</a>

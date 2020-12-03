@@ -68,3 +68,28 @@ def comment(request, username, post_id , comment_id):
             comment.approved=True
             comment.save()
     return redirect('sinlge_post', username= username,id =post_id )
+
+def create_comment(request,username,post_id):
+    if request.method == 'POST' and request.user.is_authenticated:
+        comment_text=request.POST.get('post_comment')
+        try:
+            Comment.objects.create(author=request.user,reply_to=Post.objects.get(id=post_id),text=comment_text,approved=False)
+        except User.DoesNotExist:
+            pass
+        return redirect('sinlge_post', username= username,id =post_id )
+    elif request.method == 'GET':
+        return redirect(request.META.get('HTTP_REFERER'))
+
+def post_like(request,username,post_id):
+    if request.method == 'GET':
+        action=request.GET.get('action').strip()
+        post = Post.objects.get(id=post_id)
+        if action=='like' :
+            try:
+                PostLike.objects.get(author=request.user,post=post)
+            except PostLike.DoesNotExist:
+                print("")
+                PostLike.objects.create(author=request.user,post=post).save()
+        elif action=='unlike':
+            PostLike.objects.get(author=request.user,post=post).delete()
+    return redirect(request.META.get('HTTP_REFERER'))
