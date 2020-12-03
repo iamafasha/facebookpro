@@ -14,8 +14,10 @@ register = template.Library()
 
 @register.filter
 def in_unapproved(things):
-    return things.filter(approved=False)
+    if things:
+        return things.filter(approved=False)
 
 @register.filter
 def in_approved(things):
-    return things.filter(approved=True)
+    if things:
+        return things.filter(approved=True)
