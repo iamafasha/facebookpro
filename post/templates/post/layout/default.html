@@ -42,7 +42,18 @@
 
         </div>
         <div class="col-md-5">
-
+          
+          {% if not user.profile_pic %}
+              <div class="jumbotron">
+            <h3 class="display-6">Welcome, {{user.last_name}}.</h3>
+            <p class="lead">Let people people find you easily</p>
+            <hr class="my-6">
+            <p class="lead">
+              <a class="btn btn-primary btn-md" href="{% url 'settings' %}" role="button">Add a Profile Picture</a>
+            </p>
+          </div>
+          {% endif %}
+          
           {% if user.is_authenticated %}
               
               {% block create_post %}
