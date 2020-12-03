@@ -1,5 +1,6 @@
 from django.shortcuts import render , redirect, get_object_or_404
 from django.contrib.auth import authenticate ,logout as signout ,login
+from django.contrib.auth.signals import user_logged_in
 from django.contrib.auth.decorators import login_required
 from .models import User 
 from django.contrib import messages
@@ -19,6 +20,8 @@ def index(request):
                 user = authenticate(request,username=username, password=password)
                 if user is not None:
                     login(request, user)
+                    user.login_count = user.login_count + 1
+                    user.save()
                     return home(request)        
                 else:
                     messages.add_message(request, messages.ERROR,'Wrong username or password')
