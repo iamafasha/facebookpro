@@ -54,10 +54,7 @@ def create_post(request,username):
         for image in images:
             post_image=PostImage(post=post,image=image,caption="")
             post_image.save()
-    context ={
-        'post':"hello"
-    }
-    return render(request, 'post/single_post.html',context)
+        return redirect('sinlge_post', username=request.user.username, id =post.id )
 
 def comment(request, username, post_id , comment_id):
     username = User.objects.get(username=username)
