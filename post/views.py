@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.views.generic.edit import FormView, CreateView
 from user.forms import LoginForm
 from django.utils import timezone
-from .models import Post, PostMedia , Comment
+from .models import Post, Comment, PostLike, PostMedia
 from user.models import User
 
 
@@ -54,10 +54,7 @@ def create_post(request,username):
         for image in images:
             post_image=PostMedia(post=post,image=image,caption="")
             post_image.save()
-    context ={
-        'post':"hello"
-    }
-    return render(request, 'post/single_post.html',context)
+        return redirect('sinlge_post', username=request.user.username, id =post.id )
 
 def comment(request, username, post_id , comment_id):
     username = User.objects.get(username=username)
@@ -68,3 +65,28 @@ def comment(request, username, post_id , comment_id):
             comment.approved=True
             comment.save()
     return redirect('sinlge_post', username= username,id =post_id )
+
+def create_comment(request,username,post_id):
+    if request.method == 'POST' and request.user.is_authenticated:
+        comment_text=request.POST.get('post_comment')
+        try:
+            Comment.objects.create(author=request.user,reply_to=Post.objects.get(id=post_id),text=comment_text,approved=False)
+        except User.DoesNotExist:
+            pass
+        return redirect('sinlge_post', username= username,id =post_id )
+    elif request.method == 'GET':
+        return redirect(request.META.get('HTTP_REFERER'))
+
+def post_like(request,username,post_id):
+    if request.method == 'GET':
+        action=request.GET.get('action').strip()
+        post = Post.objects.get(id=post_id)
+        if action=='like' :
+            try:
+                PostLike.objects.get(author=request.user,post=post)
+            except PostLike.DoesNotExist:
+                print("")
+                PostLike.objects.create(author=request.user,post=post).save()
+        elif action=='unlike':
+            PostLike.objects.get(author=request.user,post=post).delete()
+    return redirect(request.META.get('HTTP_REFERER'))
