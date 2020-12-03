@@ -24,7 +24,7 @@
         </div>
         <div class="card-footer text-muted">
            <span>{{ post.published_date }}</span> 
-            <a href="{% url 'sinlge_post' user post.id %}">view post</a>
+            <a href="{% url 'sinlge_post' post.author.username post.id %}">view post</a>
         </div>
         </div>
 
