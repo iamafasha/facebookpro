@@ -1,6 +1,7 @@
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer 
 from rest_framework import serializers
 from post.models import Post, Comment, PostMedia, PostLike
+
 
 
 class PostMediaSerializers(ModelSerializer):
@@ -8,13 +9,17 @@ class PostMediaSerializers(ModelSerializer):
         model = PostMedia
         fields = ['id', 'image']
 
-
 class CommentSerializers(ModelSerializer):
     class Meta:
         model = Comment
-        fields = ['id','text', 'author', 'created_date']
+        fields = ['id','text', 'author' , 'created_date']
+        read_only_fields = ['author' ,'created_date']
+        
+class PostOwnerComentSerializers(ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = ['id','text', 'author', 'approved','created_date']
         read_only_fields = ['author', 'created_date']
-
 
 class PostSerializers(ModelSerializer):
     likes_count = serializers.SerializerMethodField(read_only=True)
@@ -28,7 +33,7 @@ class PostSerializers(ModelSerializer):
             'post_media', 'author', 'approved', 'comments','created_date',
         ]
         read_only_fields = ['author', 'approved', 'comments','created_date',]
-
+        
     def get_likes_count(self, obj):
         return obj.postlike_set.count()
 
@@ -36,6 +41,20 @@ class PostSerializers(ModelSerializer):
         user =  self.context['request'].user
         instance=Post.objects.create(author=user ,**validated_data)
         return instance
+
+class PostOwnerPostSerializers(PostOwnerComentSerializers):
+    likes_count = serializers.SerializerMethodField(read_only=True)
+    post_media = PostMediaSerializers(source='postmedia_set', many=True, required=False)
+    comments = PostOwnerComentSerializers(source='comment_set', many=True, read_only=True)
+    class Meta:
+        model = Post
+        fields = [
+            'id', 'text', 'likes_count', 'likes_count',
+            'post_media', 'author', 'approved', 'comments','created_date',
+        ]
+        read_only_fields = ['author', 'approved', 'comments','created_date',]
+    def get_likes_count(self, obj):
+        return obj.postlike_set.count()
 
 
 class PostLikeSerializers(ModelSerializer):
