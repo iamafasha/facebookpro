@@ -41,7 +41,18 @@ class CommentListView(ListCreateAPIView):
 
     def get_queryset(self):
         post_id = self.kwargs['post_id']
+        if self.request.user.is_authenticated:
+            if self.request.user.is_staff or self.request.user.id == Post.objects.get(id=post_id).author.id:
+                return Comment.objects.filter(reply_to=post_id)
+            return Comment.objects.filter(reply_to=post_id ,approved=True) | Comment.objects.filter(reply_to=post_id ,author = self.request.user)
         return Comment.objects.filter(reply_to=post_id ,approved=True)
+        
+    def get_serializer_class(self):
+        post_id = self.kwargs['post_id']
+        # Check if owner of post 
+        if self.request.user.is_staff or self.request.user.id == Post.objects.get(id=post_id).author.id:
+            return PostOwnerComentSerializers
+        return CommentSerializers
 
 class CommentDetailView(RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated|ReadOnly]
