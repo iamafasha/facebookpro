@@ -1,4 +1,4 @@
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer 
 from rest_framework import serializers
 from post.models import Post, Comment, PostMedia, PostLike
 
@@ -12,7 +12,8 @@ class PostCommentsListSerializer(serializers.ListSerializer):
     def to_representation(self, data):
         user =  self.context['request'].user
         new_data = data
-        if hasattr(data, 'first'):
+        if hasattr(data, 'first') and data.first() is not None:
+            print(data)
             post_author_id = data.first().reply_to.author.id
         # if not athenticated need to only approved
         # if owner of post needs to see all posts including un approved
@@ -31,10 +32,12 @@ class PostCommentsListSerializer(serializers.ListSerializer):
         new_data =new_data.order_by("-created_date")
         return super(PostCommentsListSerializer, self).to_representation(new_data)
 
+
 class PostMediaSerializers(ModelSerializer):
     class Meta:
         model = PostMedia
         fields = ['id', 'image']
+
 
 class PostCommentSerializers(ModelSerializer):
     class Meta:
@@ -56,7 +59,7 @@ class CommentSerializers(ModelSerializer):
         model = Comment
         fields = ['id','text', 'author' , 'approved' , 'created_date']
         read_only_fields = ['author', 'approved' ,'created_date']
-        
+
 class PostOwnerComentSerializers(ModelSerializer):
     class Meta:
         model = Comment
@@ -98,3 +101,9 @@ class PostOwnerPostSerializers(PostOwnerComentSerializers):
         read_only_fields = ['author', 'approved', 'comments','created_date',]
     def get_likes_count(self, obj):
         return obj.postlike_set.count()
+
+
+class PostLikeSerializers(ModelSerializer):
+    class Meta:
+        model = PostLike
+        fields = ['id', 'post', 'author']
