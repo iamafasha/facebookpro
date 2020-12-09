@@ -1,6 +1,6 @@
 from django.urls import path
 from .auth_views import RegisterView, LoginView
-from .post_views import PostDetailView, PostListView, CommentListView , CommentDetailView
+from .post_views import PostDetailView, PostListView, CommentListView , CommentDetailView , PostLikeViewSet
 
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
@@ -24,11 +24,12 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path("", schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
-     path('sandbox/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    path('auth/register/', RegisterView.as_view()),
-    path('auth/login/', LoginView.as_view()),
-    path('posts/', PostListView.as_view()),
-    path('posts/<int:id>/', PostDetailView.as_view()),
-    path('posts/<int:post_id>/comments/', CommentListView.as_view()),
-    path('posts/<int:post_id>/comments/<int:id>/', CommentDetailView.as_view()),
+    path('sandbox/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path('auth/register/', RegisterView.as_view(), name ="api_register"),
+    path('auth/login/', LoginView.as_view(), name="api_login" ),
+    path('posts/', PostListView.as_view(),name="api_post_list"),
+    path('posts/<int:id>/', PostDetailView.as_view(),name="api_post_single"),
+    path('posts/<int:post_id>/comments/', CommentListView.as_view(),name="api_comments_list"),
+    path('posts/<int:post_id>/comments/<int:id>/', CommentDetailView.as_view(),name="api_coments_single"),
+    path('posts/<int:post_id>/like/', PostLikeViewSet.as_view({'post': 'create','delete':'destroy'}) ,name="api_like"),
 ]

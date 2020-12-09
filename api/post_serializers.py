@@ -31,14 +31,11 @@ class PostCommentsListSerializer(serializers.ListSerializer):
                     new_data = user_data|data.filter(approved=True)
         new_data =new_data.order_by("-created_date")
         return super(PostCommentsListSerializer, self).to_representation(new_data)
-
-
-
+        
 class PostMediaSerializers(ModelSerializer):
     class Meta:
         model = PostMedia
         fields = ['id', 'image']
-
 
 class PostCommentSerializers(ModelSerializer):
     class Meta:
@@ -53,7 +50,6 @@ class PostOwnerPostComentSerializers(ModelSerializer):
         fields = ['id','text', 'author', 'approved','created_date']
         read_only_fields = ['author', 'created_date']
         list_serializer_class = PostCommentsListSerializer
-
 
 class CommentSerializers(ModelSerializer):
     class Meta:
@@ -102,8 +98,16 @@ class PostOwnerPostSerializers(PostOwnerComentSerializers):
     def get_likes_count(self, obj):
         return obj.postlike_set.count()
 
-
-class PostLikeSerializers(ModelSerializer):
+class AdminPostSerializers(PostOwnerComentSerializers):
+    likes_count = serializers.SerializerMethodField(read_only=True)
+    post_media = PostMediaSerializers(source='postmedia_set', many=True, required=False)
+    comments = PostOwnerPostComentSerializers(source='comment_set', many=True, read_only=True)
     class Meta:
-        model = PostLike
-        fields = ['id', 'post', 'author']
+        model = Post
+        fields = [
+            'id', 'text', 'likes_count', 'likes_count',
+            'post_media', 'author', 'approved', 'comments','created_date',
+        ]
+        read_only_fields = ['author', 'comments','created_date',]
+    def get_likes_count(self, obj):
+        return obj.postlike_set.count()
