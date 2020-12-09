@@ -81,11 +81,11 @@ def post_like(request,username,post_id):
     if request.method == 'GET':
         action=request.GET.get('action').strip()
         post = Post.objects.get(id=post_id)
+        
         if action=='like' :
             try:
                 PostLike.objects.get(author=request.user,post=post)
             except PostLike.DoesNotExist:
-                print("")
                 PostLike.objects.create(author=request.user,post=post).save()
         elif action=='unlike':
             PostLike.objects.get(author=request.user,post=post).delete()
